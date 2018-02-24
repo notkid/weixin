@@ -90,6 +90,7 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
+  import city from '../utils/city'
 
   console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
 
@@ -234,6 +235,7 @@
     }
 
     onLoad() {
+      city.init()
       let self = this
       this.$parent.getUserInfo(function (userInfo) {
         if (userInfo) {
