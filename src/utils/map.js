@@ -25,6 +25,7 @@ export default class BDMapWX {
    */
   weather({coord_type = 'gcj02', success = () => {}, fail = () => {}, location = '', output = 'json', sn = '', timestamp = ''}) {
     const type = 'gcj02'
+    console.log(coord_type, 'from inside')
     const weatherParam = {
       coord_type,
       ak: this.ak,
@@ -35,7 +36,7 @@ export default class BDMapWX {
     const locationSuccess = (data) => {
       weatherParam.location = `${data.longitude},${data.latitude}`
       wepy.request({
-        url: 'https://api.map.baidu.com/telematics/v3/weather'，
+        url: 'https://api.map.baidu.com/telematics/v3/weather',
         data: weatherParam,
         header: {
           "content-type": "application/json"
@@ -45,11 +46,15 @@ export default class BDMapWX {
           const res = data.data
           if (res && res.error === 0 && res.status === 'success') {
             const weatherArr = res.results
-            const outputRes = {}
             success({
               originalData: res,
               currentWeather: [{
-                // currentCity: weatherArr[0][""]
+                currentCity: weatherArr[0]["currentCity"],
+                pm25: weatherArr[0]["pm25"],
+                date: weatherArr[0]["weather_data"][0]["date"],
+                temperature: weatherArr[0]["weather_data"][0]["temperature"],
+                weatherDesc: weatherArr[0]["weather_data"][0]["weather"],
+                wind: weatherArr[0]["weather_data"][0]["wind"]
               }]
             })
           } else {
